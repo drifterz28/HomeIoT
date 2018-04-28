@@ -9,7 +9,7 @@ const config = require('./config.json');
 const graphqlHTTP = require('express-graphql');
 const { buildSchema } = require('graphql');
 
-const tempTrack = require('./models/temp-track');
+const tempTrack = require('./modals/temp-track');
 
 
 app.set('port', (process.env.PORT || 80));
@@ -20,7 +20,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(express.static('static'));
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
   res.send('good');

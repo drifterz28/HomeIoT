@@ -11,7 +11,7 @@ const createTable = (mac, temp, hum) => {
 
 const insertRows = (mac, temp, hum) => {
   console.log(new Date())
-  db.run(`INSERT INTO temps (mac, temp, hum, timestamp) VALUES (${mac}, ${temp}, ${hum}, DATETIME('now','localtime'))`);
+  db.run(`INSERT INTO temps (mac, temp, hum, timestamp) VALUES (?, ?, ?, DATETIME('now','localtime'))`, [mac, temp, hum]);
 };
 
 const readAllRows = (res) => {
