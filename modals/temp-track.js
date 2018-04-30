@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 let db;
 
 const createDb = () => {
-  db = new sqlite3.Database('temps.sqlite3', createTable);
+  db = new sqlite3.Database('temps.db', createTable);
 };
 
 const createTable = (mac, temp, hum) => {
