@@ -1,27 +1,19 @@
-const sqlite3 = require('sqlite3').verbose();
-let db;
+const sqlite = require('sqlite');
 
-const createDb = () => {
-  db = new sqlite3.Database('temps.db', createTable);
-};
-
-const createTable = (mac, temp, hum) => {
-  db.run("CREATE TABLE IF NOT EXISTS temps (id INTEGER PRIMARY KEY AUTOINCREMENT, mac TEXT, temp REAL, hum REAL, timestamp TEXT)");
-};
+const dbPromise = sqlite.open('./database.db', { Promise });
 
 const insertRows = (mac, temp, hum) => {
-  console.log(new Date())
-  db.run(`INSERT INTO temps (mac, temp, hum, timestamp) VALUES (?, ?, ?, DATETIME('now','localtime'))`, [mac, temp, hum]);
+  dbPromise.run(`INSERT INTO temps (mac, temp, hum, timestamp) VALUES (?, ?, ?, DATETIME('now','localtime'))`, [mac, temp, hum]);
 };
 
 const readAllRows = (res) => {
-  db.all("SELECT * FROM temps", (err, rows) => {
+  dbPromise.all("SELECT * FROM temps", (err, rows) => {
     if(err) {
       console.log(err)
     }
     res.setHeader('Content-Type', 'application/json');
     res.send(JSON.stringify(rows));
-    db.close();
+    dbPromise.close();
   });
 };
 
@@ -29,11 +21,13 @@ module.exports = (req, res) => {
   const mac = req.query.mac;
   const temp = req.query.t;
   const hum = req.query.h;
-  createDb();
 
   if(mac && temp && hum) {
     insertRows(mac, temp, hum);
   }
-
-  readAllRows(res);
+  Promise.all([
+    sqlite.open('./database.db', { Promise })
+  ]).then(function([mainDb]){
+    console.log(mainDb.all("SELECT * FROM temps"))
+  });
 };
