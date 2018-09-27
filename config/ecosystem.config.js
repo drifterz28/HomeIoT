@@ -3,7 +3,7 @@ module.exports = {
     name: "app",
     // source_map_support: true,
     script : "./app.js",
-    watch: ["./"],
+    watch: ["./app/"],
     ignore_watch : ["node_modules", "dist"],
     watch_options: {
       followSymlinks: false

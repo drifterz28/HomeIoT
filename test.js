@@ -1,25 +1,8 @@
-const si = require('systeminformation');
+var MongoClient = require('mongodb').MongoClient;
 
-// promises style - new in version 3
-// si.cpuTemperature()
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
-//
-// si.mem()
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
-//
-// si.fsSize()
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
-//
-// si.networkStats()
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
-//
-// si.currentLoad()
-//     .then(data => console.log(data))
-//     .catch(error => console.error(error));
-si.getDynamicData()
-    .then(data => console.log(data))
-    .catch(error => console.error(error));
+var uri = "mongodb+srv://homeiot:J*D!Z@GYgypI79Ui7o7o@cluster0-riran.mongodb.net/homeiot?retryWrites=true";
+MongoClient.connect(uri, function(err, client) {
+   const collection = client.db("homeiot").collection("devices");
+   // perform actions on the collection object
+   client.close();
+});
